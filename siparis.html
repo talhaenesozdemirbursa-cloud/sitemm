@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atölye3D - Kargo ve Sipariş Takibi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#0070f3',
+                            600: '#0051cc',
+                            700: '#0040a8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="anasayfasatin.html" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                    <i class="fa-solid fa-cube text-lg"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-gray-900">Atölye<span class="text-brand-500">3D</span></span>
+            </a>
+            <a href="anasayfasatin.html" class="text-sm font-semibold text-gray-600 hover:text-brand-500 transition-colors">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Ana Sayfaya Dön
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <span class="text-brand-500 font-semibold text-sm uppercase tracking-wider">Canlı Kargo Takibi</span>
+                <h1 id="order-title" class="text-3xl font-extrabold text-gray-900 tracking-tight mt-1">Sipariş Detayı</h1>
+            </div>
+            <div id="order-date" class="text-sm text-gray-500 font-medium bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
+                Tarih yükleniyor...
+            </div>
+        </div>
+
+        <!-- Kargo Aşamaları (Timeline) Kartı -->
+        <div class="bg-white p-6 sm:p-10 rounded-3xl border border-gray-100 shadow-sm mb-8 space-y-8">
+            <h3 class="font-bold text-lg text-gray-900 border-b border-gray-100 pb-4">Kargo Durumu</h3>
+
+            <div class="relative pl-6 sm:pl-10 space-y-10 before:absolute before:left-2.5 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-brand-100">
+                
+                <!-- Aşama 1: Sipariş Alındı -->
+                <div class="relative flex items-start gap-4">
+                    <div class="absolute -left-6 sm:-left-8 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-brand-500 text-white flex items-center justify-center text-xs font-bold shadow-md shadow-brand-500/30">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">Sipariş Alındı</h4>
+                        <p class="text-xs text-gray-500 mt-0.5">Siparişiniz sisteme başarıyla kaydedildi ve ödemeniz onaylandı.</p>
+                    </div>
+                </div>
+
+                <!-- Aşama 2: 3D Baskı Üretiminde -->
+                <div class="relative flex items-start gap-4">
+                    <div class="absolute -left-6 sm:-left-8 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-brand-500 text-white flex items-center justify-center text-xs font-bold shadow-md shadow-brand-500/30">
+                        <i class="fa-solid fa-print"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900">3D Baskı Üretim Aşamasında</h4>
+                        <p class="text-xs text-gray-500 mt-0.5">Atölyemizde yüksek kaliteli PLA filamentler ile modeliniz basılıyor.</p>
+                    </div>
+                </div>
+
+                <!-- Aşama 3: Paketleniyor -->
+                <div class="relative flex items-start gap-4">
+                    <div class="absolute -left-6 sm:-left-8 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-400">Kalite Kontrol & Paketleme</h4>
+                        <p class="text-xs text-gray-400 mt-0.5">Ürününüz kontrol ediliyor ve özenle paketleniyor.</p>
+                    </div>
+                </div>
+
+                <!-- Aşama 4: Kargoya Verildi -->
+                <div class="relative flex items-start gap-4">
+                    <div class="absolute -left-6 sm:-left-8 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-400">Kargoya Verildi</h4>
+                        <p class="text-xs text-gray-400 mt-0.5">Kargo firmasına teslim edildi, yola çıkmak üzere.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Ürünler ve Adres Bilgisi Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Ürünler -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                <h3 class="font-bold text-base text-gray-900 border-b border-gray-100 pb-3">Sipariş Edilen Ürünler</h3>
+                <ul id="order-items-list" class="space-y-3">
+                    <!-- JS ile dolacak -->
+                </ul>
+                <div class="pt-3 border-t border-gray-100 flex justify-between font-bold text-gray-900">
+                    <span>Toplam Tutar:</span>
+                    <span id="order-total-price" class="text-brand-500">0.00 ₺</span>
+                </div>
+            </div>
+
+            <!-- Teslimat Adresi -->
+            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                <h3 class="font-bold text-base text-gray-900 border-b border-gray-100 pb-3">Teslimat Adresi</h3>
+                <div id="shipping-address-box" class="text-sm text-gray-600 space-y-1">
+                    <!-- JS ile dolacak -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase ve Sayfa Mantığı -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPLv0-onaIMbHIDvnVEBz7MGk2rR6E5j0",
+            authDomain: "atolye3d-55902.firebaseapp.com",
+            projectId: "atolye3d-55902",
+            storageBucket: "atolye3d-55902.firebasestorage.app",
+            messagingSenderId: "839537894620",
+            appId: "1:839537894620:web:b24c20c3a744cb29e94019",
+            measurementId: "G-ZB1LCH5QH1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const ordersKey = 'orders_' + user.uid;
+                const orders = JSON.parse(localStorage.getItem(ordersKey)) || [];
+
+                // URL'den sipariş ID'sini yakala (Örn: siparis.html?id=365719)
+                const urlParams = new URLSearchParams(window.location.search);
+                const orderId = urlParams.get('id');
+
+                const targetOrder = orders.find(o => o.id == orderId);
+
+                if (targetOrder) {
+                    document.getElementById('order-title').textContent = `Sipariş #${targetOrder.id}`;
+                    document.getElementById('order-date').textContent = targetOrder.date;
+                    document.getElementById('order-total-price').textContent = targetOrder.total.toFixed(2) + ' ₺';
+
+                    // Ürünleri listele
+                    const itemsContainer = document.getElementById('order-items-list');
+                    itemsContainer.innerHTML = '';
+                    targetOrder.items.forEach(item => {
+                        itemsContainer.innerHTML += `
+                            <li class="flex justify-between text-sm">
+                                <span class="text-gray-700 font-medium">${item.name} <span class="text-xs text-gray-400">(${item.quantity} adet)</span></span>
+                                <span class="font-semibold text-gray-900">${(item.price * item.quantity).toFixed(2)} ₺</span>
+                            </li>
+                        `;
+                    });
+
+                    // Adresi yazdır
+                    if (targetOrder.shippingAddress) {
+                        const addr = targetOrder.shippingAddress;
+                        document.getElementById('shipping-address-box').innerHTML = `
+                            <p class="font-bold text-gray-900">${addr.fullName}</p>
+                            <p><i class="fa-solid fa-phone mr-1 text-gray-400"></i> ${addr.phone}</p>
+                            <p><i class="fa-solid fa-envelope mr-1 text-gray-400"></i> ${addr.email}</p>
+                            <p class="pt-1 text-xs text-gray-500"><i class="fa-solid fa-location-dot mr-1 text-brand-500"></i> ${addr.address}</p>
+                        `;
+                    }
+                } else {
+                    document.querySelector('main').innerHTML = `
+                        <div class="text-center py-20 space-y-4">
+                            <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500"></i>
+                            <h2 class="text-2xl font-bold text-gray-900">Sipariş Bulunamadı</h2>
+                            <p class="text-gray-500 text-sm">Aradığınız sipariş numarasına ait detay bulunamadı.</p>
+                            <a href="anasayfasatin.html" class="inline-block px-6 py-3 bg-brand-500 text-white text-sm font-semibold rounded-xl shadow-md">Ana Sayfaya Dön</a>
+                        </div>
+                    `;
+                }
+            } else {
+                window.location.href = 'giris.html';
+            }
+        });
+    </script>
+</body>
+</html>

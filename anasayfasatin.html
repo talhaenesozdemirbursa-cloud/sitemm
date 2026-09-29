@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atölye3D - Eşsiz 3D Tasarım ve Figürler</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#0070f3',
+                            600: '#0051cc',
+                            700: '#0040a8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-cube text-lg"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-gray-900">Atölye<span class="text-brand-500">3D</span></span>
+            </a>
+
+            <!-- Nav Links (Desktop) -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm text-gray-600">
+                <a href="#anasayfa" class="text-brand-500 hover:text-brand-600 transition-colors">Ana Sayfa</a>
+                <a href="#urunler" class="hover:text-brand-500 transition-colors">Ürünler</a>
+                <a href="#kategoriler" class="hover:text-brand-500 transition-colors">Kategoriler</a>
+            </nav>
+
+            <!-- Sağ Butonlar (Kullanıcı Bilgisi, Çıkış, Siparişlerim ve Sepet) -->
+            <div class="flex items-center gap-3">
+                <!-- Giriş Yapan Kullanıcının Adı ve Çıkış Butonu -->
+                <div id="user-info-container" class="hidden items-center gap-2 bg-gray-100 px-3.5 py-2 rounded-xl text-xs font-semibold text-gray-700">
+                    <i class="fa-solid fa-user text-brand-500"></i>
+                    <span id="user-name-display">Kullanıcı</span>
+                    <button onclick="logoutUser()" title="Çıkış Yap" class="ml-2 text-red-500 hover:text-red-700 transition-colors">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+
+                <!-- Siparişlerim Butonu -->
+                <button onclick="toggleOrdersModal()" class="flex items-center gap-2 px-3.5 py-2.5 text-sm font-semibold text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-xl transition-all">
+                    <i class="fa-solid fa-box-archive text-brand-500"></i>
+                    <span class="hidden sm:inline">Siparişlerim</span>
+                </button>
+
+                <!-- Sepet Butonu -->
+                <button onclick="toggleCart()" class="relative p-2.5 text-gray-600 hover:text-brand-500 hover:bg-gray-100 rounded-xl transition-all">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-brand-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-sm hidden">0</span>
+                </button>
+
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600 hover:text-brand-500">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 px-4 pt-2 pb-6 space-y-3">
+            <a href="#anasayfa" class="block py-2 font-medium text-gray-700">Ana Sayfa</a>
+            <a href="#urunler" class="block py-2 font-medium text-gray-700">Ürünler</a>
+            <a href="#kategoriler" class="block py-2 font-medium text-gray-700">Kategoriler</a>
+        </div>
+    </header>
+
+    <section id="anasayfa" class="relative overflow-hidden py-20 lg:py-32 bg-gradient-to-b from-brand-50/50 via-white to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 text-xs font-semibold tracking-wide uppercase">
+                        <i class="fa-solid fa-bolt text-brand-500"></i> Yeni Nesil 3D Baskı Teknolojisi
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                        Eşsiz 3D Tasarımlar, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-indigo-600">Masanıza Renk Katın</span>
+                    </h1>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0">
+                        Yüksek kaliteli PLA filamentlerle basılmış en havalı anahtarlıklar, göz alıcı dekoratif süsler ve koleksiyonluk figürler Atölye3D'de seni bekliyor.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#urunler" class="w-full sm:w-auto px-8 py-4 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-2xl shadow-xl shadow-brand-500/30 transition-all hover:-translate-y-0.5 text-center">
+                            Alışverişe Başla <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#kategoriler" class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-semibold rounded-2xl transition-all text-center">
+                            Kategorileri İncele
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Visual / Ejderha Figürü Card -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div class="absolute -inset-1.5 bg-gradient-to-r from-brand-500 to-indigo-600 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                        <div class="relative bg-white p-6 sm:p-8 rounded-3xl border border-gray-100 shadow-2xl space-y-6">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-lg"><i class="fa-solid fa-fire mr-1"></i> Haftanın Trendi</span>
+                                <span class="text-xs text-gray-400 font-medium">Özel Üretim</span>
+                            </div>
+                            <div class="h-64 bg-gradient-to-tr from-gray-100 to-brand-50 rounded-2xl flex items-center justify-center relative overflow-hidden group">
+                                <img src="ejdarha.jpg" class="w-full h-full object-contain">
+                                <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-xl text-xs font-bold shadow-sm">
+                                    Mafsalcı Ejderha Figürü
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2">
+                                <div>
+                                    <span class="text-xs text-gray-400 block">Özel Fiyat</span>
+                                    <span class="text-xl font-bold text-gray-900">149.99 ₺</span>
+                                </div>
+                                <button onclick="addToCart('Mafsalcı Ejderha Figürü', 149.99)" class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all">
+                                    Sepete Ekle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kategoriler Bölümü -->
+    <section id="kategoriler" class="py-16 bg-white border-y border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Kategorilerimiz</h2>
+                <p class="text-gray-600 mt-2">İhtiyacınıza ve zevkinize uygun kategoriler arasından seçim yapın.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div onclick="filterProducts('anahtarlik')" class="cursor-pointer group bg-gray-50 hover:bg-brand-50 border border-gray-200 hover:border-brand-300 p-8 rounded-3xl text-center transition-all duration-300">
+                    <div class="w-16 h-16 bg-white shadow-md rounded-2xl mx-auto flex items-center justify-center text-brand-500 text-2xl group-hover:scale-110 transition-transform mb-4">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-900 group-hover:text-brand-600">Anahtarlıklar</h3>
+                    <p class="text-sm text-gray-500 mt-1">Minimalist ve havalı tasarımlar</p>
+                </div>
+                <div onclick="filterProducts('figur')" class="cursor-pointer group bg-gray-50 hover:bg-brand-50 border border-gray-200 hover:border-brand-300 p-8 rounded-3xl text-center transition-all duration-300">
+                    <div class="w-16 h-16 bg-white shadow-md rounded-2xl mx-auto flex items-center justify-center text-brand-500 text-2xl group-hover:scale-110 transition-transform mb-4">
+                        <i class="fa-solid fa-chess-rook"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-900 group-hover:text-brand-600">Figürler</h3>
+                    <p class="text-sm text-gray-500 mt-1">Oyun ve sinema karakterleri</p>
+                </div>
+                <div onclick="filterProducts('dekoratif')" class="cursor-pointer group bg-gray-50 hover:bg-brand-50 border border-gray-200 hover:border-brand-300 p-8 rounded-3xl text-center transition-all duration-300">
+                    <div class="w-16 h-16 bg-white shadow-md rounded-2xl mx-auto flex items-center justify-center text-brand-500 text-2xl group-hover:scale-110 transition-transform mb-4">
+                        <i class="fa-solid fa-house-chimney"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-900 group-hover:text-brand-600">Dekoratif Süsler</h3>
+                    <p class="text-sm text-gray-500 mt-1">Masaüstü modern objeler</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ürünler Bölümü -->
+    <section id="urunler" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="text-brand-500 font-semibold text-sm uppercase tracking-wider">Öne Çıkan Ürünler</span>
+                    <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight mt-1">Tüm 3D Ürünlerimiz</h2>
+                </div>
+                
+                <!-- Arama Çubuğu -->
+                <div class="w-full md:w-72">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" id="search-input" oninput="searchProducts()" placeholder="Ürün ara..." class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 shadow-sm">
+                    </div>
+                </div>
+
+                <!-- Filter buttons -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterProducts('hepsi')" class="filter-btn px-4 py-2 text-sm font-semibold rounded-xl bg-brand-500 text-white shadow-sm transition-all">Tümü</button>
+                    <button onclick="filterProducts('anahtarlik')" class="filter-btn px-4 py-2 text-sm font-semibold rounded-xl bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">Anahtarlıklar</button>
+                    <button onclick="filterProducts('figur')" class="filter-btn px-4 py-2 text-sm font-semibold rounded-xl bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">Figürler</button>
+                    <button onclick="filterProducts('dekoratif')" class="filter-btn px-4 py-2 text-sm font-semibold rounded-xl bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">Dekoratif</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between" data-category="anahtarlik">
+                    <div>
+                        <div class="h-60 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center relative overflow-hidden">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold px-3 py-1 rounded-lg">Anahtarlık</span>
+                            <img src="retrp.jpg" class="w-full h-full object-contain p-2">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="product-title font-bold text-lg text-gray-900">Retro Konsol Anahtarlık</h3>
+                            <p class="text-sm text-gray-500 mt-1">Detaylı işçilik, sağlam PLA malzeme.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 flex items-center justify-between pt-2 border-t border-gray-50">
+                        <span class="text-xl font-bold text-gray-900">49.99 ₺</span>
+                        <button onclick="addToCart('Retro Konsol Anahtarlık', 49.99)" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-plus mr-1"></i> Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between" data-category="figur">
+                    <div>
+                        <div class="h-60 bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center relative overflow-hidden">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold px-3 py-1 rounded-lg">Figür</span>
+                            <img src="cyp.jpg" class="w-full h-full object-contain p-2">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="product-title font-bold text-lg text-gray-900">Cyberpunk Robot Figürü</h3>
+                            <p class="text-sm text-gray-500 mt-1">Masaüstü dekorasyon için harika seçim.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 flex items-center justify-between pt-2 border-t border-gray-50">
+                        <span class="text-xl font-bold text-gray-900">129.99 ₺</span>
+                        <button onclick="addToCart('Cyberpunk Robot Figürü', 129.99)" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-plus mr-1"></i> Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between" data-category="dekoratif">
+                    <div>
+                        <div class="h-60 bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold px-3 py-1 rounded-lg">Dekoratif</span>
+                            <img src="syl.jpg" class="w-full h-full object-contain p-2">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="product-title font-bold text-lg text-gray-900">Su Yolu Kalemlik</h3>
+                            <p class="text-sm text-gray-500 mt-1">Çalışma masanıza modern bir dokunuş.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 flex items-center justify-between pt-2 border-t border-gray-50">
+                        <span class="text-xl font-bold text-gray-900">89.99 ₺</span>
+                        <button onclick="addToCart('Geometrik Saksı & Kalemlik', 89.99)" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-plus mr-1"></i> Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between" data-category="anahtarlik">
+                    <div>
+                        <div class="h-60 bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center relative overflow-hidden">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold px-3 py-1 rounded-lg">Anahtarlık</span>
+                            <img src="krf.jpg" class="w-full h-full object-contain p-2">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="product-title font-bold text-lg text-gray-900">Kuru Kafa Tasarımlı Anahtarlık</h3>
+                            <p class="text-sm text-gray-500 mt-1">Gotik ve modern tarzı sevenler için.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 flex items-center justify-between pt-2 border-t border-gray-50">
+                        <span class="text-xl font-bold text-gray-900">39.99 ₺</span>
+                        <button onclick="addToCart('Kuru Kafa Tasarımlı Anahtarlık', 39.99)" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-plus mr-1"></i> Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between" data-category="figur">
+                    <div>
+                        <div class="h-60 bg-gradient-to-br from-rose-50 to-pink-50 flex items-center justify-center relative overflow-hidden">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold px-3 py-1 rounded-lg">Figür</span>
+                            <img src="kedifi.jpg" class="w-full h-full object-contain p-2">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="product-title font-bold text-lg text-gray-900">Sevilen Kedi Figürü</h3>
+                            <p class="text-sm text-gray-500 mt-1">Kedi severler için tatlı masa süsü.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 flex items-center justify-between pt-2 border-t border-gray-50">
+                        <span class="text-xl font-bold text-gray-900">79.99 ₺</span>
+                        <button onclick="addToCart('Sevilen Kedi Figürü', 79.99)" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-plus mr-1"></i> Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col justify-between" data-category="dekoratif">
+                    <div>
+                        <div class="h-60 bg-gradient-to-br from-cyan-50 to-blue-50 flex items-center justify-center relative overflow-hidden">
+                            <span class="absolute top-4 left-4 bg-white/80 backdrop-blur-sm text-gray-700 text-xs font-bold px-3 py-1 rounded-lg">Dekoratif</span>
+                            <img src="abj.jpg" class="w-full h-full object-contain p-2">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="product-title font-bold text-lg text-gray-900">Minimalist Abajur Başlığı</h3>
+                            <p class="text-sm text-gray-500 mt-1">Özel dokulu ışık geçiren 3D baskı.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 flex items-center justify-between pt-2 border-t border-gray-50">
+                        <span class="text-xl font-bold text-gray-900">199.99 ₺</span>
+                        <button onclick="addToCart('Minimalist Abajur Başlığı', 199.99)" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl shadow-md transition-all active:scale-95">
+                            <i class="fa-solid fa-plus mr-1"></i> Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="hakkimizda" class="bg-gray-900 text-white pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-cube text-sm"></i>
+                        </div>
+                        <span class="text-xl font-extrabold tracking-tight">Atölye<span class="text-brand-500">3D</span></span>
+                    </div>
+                    <p class="text-sm text-gray-400">
+                        Yüksek kaliteli 3D baskı çözümleri, masaüstü süsleri ve kişiye özel tasarımlar için doğru adres.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm tracking-wider uppercase text-gray-300 mb-4">Hızlı Bağlantılar</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#anasayfa" class="hover:text-white transition-colors">Ana Sayfa</a></li>
+                        <li><a href="#urunler" class="hover:text-white transition-colors">Ürünler</a></li>
+                        <li><a href="#kategoriler" class="hover:text-white transition-colors">Kategoriler</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm tracking-wider uppercase text-gray-300 mb-4">Kategoriler</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Anahtarlıklar</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Figürler</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Dekoratif Süsler</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Özel Tasarımlar</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm tracking-wider uppercase text-gray-300 mb-4">Bülten</h4>
+                    <p class="text-sm text-gray-400 mb-4">Yeni çıkan 3D modellerden ve indirimlerden haberdar olun.</p>
+                    <form onsubmit="event.preventDefault(); showNotification('Bültene başarıyla kaydoldunuz!');" class="flex gap-2">
+                        <input type="email" placeholder="E-posta adresiniz" class="bg-gray-800 text-sm px-4 py-2.5 rounded-xl text-white border border-gray-700 focus:outline-none focus:border-brand-500 w-full" required>
+                        <button type="submit" class="bg-brand-500 hover:bg-brand-600 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all">Abone Ol</button>
+                    </form>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center justify-between pt-8 text-xs text-gray-500">
+                <p>&copy; 2026 Atölye3D. Tüm hakları saklıdır.</p>
+                <div class="flex gap-4 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-gray-400"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    <a href="#" class="hover:text-gray-400"><i class="fa-brands fa-twitter text-lg"></i></a>
+                    <a href="#" class="hover:text-gray-400"><i class="fa-brands fa-github text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal/Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="font-bold text-lg text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-brand-500"></i> Alışveriş Sepetim
+                    </h3>
+                    <button onclick="toggleCart()" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <!-- Cart Items List -->
+                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <p class="text-gray-500 text-center py-12">Sepetiniz henüz boş.</p>
+                </div>
+                <!-- Cart Footer -->
+                <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
+                    <div class="flex items-center justify-between font-bold text-lg">
+                        <span>Toplam:</span>
+                        <span id="cart-total" class="text-brand-500">0.00 ₺</span>
+                    </div>
+                    <button onclick="checkout()" class="w-full py-3.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-2xl shadow-lg shadow-brand-500/25 transition-all text-center">
+                        Siparişi Tamamla
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Siparişlerim Modal / Penceresi (Kargo Takip Butonu Eklendi) -->
+    <div id="orders-modal" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" onclick="toggleOrdersModal()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="font-bold text-lg text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-box-archive text-brand-500"></i> Geçmiş Siparişlerim
+                    </h3>
+                    <button onclick="toggleOrdersModal()" class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <!-- Orders List -->
+                <div id="orders-list" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <p class="text-gray-500 text-center py-12">Henüz tamamlanmış bir siparişiniz yok.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-brand-500 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">Ürün sepete eklendi!</span>
+    </div>
+
+    <!-- Firebase SDK ve Entegrasyon -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPLv0-onaIMbHIDvnVEBz7MGk2rR6E5j0",
+            authDomain: "atolye3d-55902.firebaseapp.com",
+            projectId: "atolye3d-55902",
+            storageBucket: "atolye3d-55902.firebasestorage.app",
+            messagingSenderId: "839537894620",
+            appId: "1:839537894620:web:b24c20c3a744cb29e94019",
+            measurementId: "G-ZB1LCH5QH1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        let cart = [];
+        let orders = [];
+        let currentCartKey = 'cart_guest';
+        let currentOrdersKey = 'orders_guest';
+
+        onAuthStateChanged(auth, (user) => {
+            const userInfoContainer = document.getElementById('user-info-container');
+            const userNameDisplay = document.getElementById('user-name-display');
+
+            if (user) {
+                currentCartKey = 'cart_' + user.uid;
+                currentOrdersKey = 'orders_' + user.uid;
+
+                if (userNameDisplay) {
+                    userNameDisplay.textContent = user.displayName || "Kullanıcı";
+                    userInfoContainer.classList.remove('hidden');
+                    userInfoContainer.classList.add('flex');
+                }
+            } else {
+                currentCartKey = 'cart_guest';
+                currentOrdersKey = 'orders_guest';
+                if (userInfoContainer) {
+                    userInfoContainer.classList.add('hidden');
+                    userInfoContainer.classList.remove('flex');
+                }
+            }
+
+            cart = JSON.parse(localStorage.getItem(currentCartKey)) || [];
+            orders = JSON.parse(localStorage.getItem(currentOrdersKey)) || [];
+            updateCartCount();
+        });
+
+        window.logoutUser = async function() {
+            try {
+                await signOut(auth);
+                showNotification("Hesaptan çıkış yapıldı.");
+                setTimeout(() => { window.location.href = "giris.html"; }, 1000);
+            } catch (error) { console.error("Çıkış hatası:", error); }
+        }
+
+        window.toggleMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        window.toggleCart = function() {
+            document.getElementById('cart-drawer').classList.toggle('hidden');
+            renderCart();
+        }
+
+        window.toggleOrdersModal = function() {
+            document.getElementById('orders-modal').classList.toggle('hidden');
+            renderOrders();
+        }
+
+        window.addToCart = function(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) { existingItem.quantity += 1; } 
+            else { cart.push({ name, price, quantity: 1 }); }
+            
+            localStorage.setItem(currentCartKey, JSON.stringify(cart));
+            updateCartCount();
+            showNotification(`${name} sepete eklendi!`);
+        }
+
+        window.increaseQuantity = function(index) {
+            cart[index].quantity += 1;
+            localStorage.setItem(currentCartKey, JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        window.decreaseQuantity = function(index) {
+            if (cart[index].quantity > 1) { cart[index].quantity -= 1; } 
+            else { cart.splice(index, 1); }
+            localStorage.setItem(currentCartKey, JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        window.updateCartCount = function() {
+            const countEl = document.getElementById('cart-count');
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (totalCount > 0) {
+                countEl.textContent = totalCount;
+                countEl.classList.remove('hidden');
+            } else { countEl.classList.add('hidden'); }
+        }
+
+        window.renderCart = function() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-12">Sepetiniz henüz boş.</p>`;
+                totalEl.textContent = '0.00 ₺';
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                container.innerHTML += `
+                    <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center text-brand-500">
+                                <i class="fa-solid fa-cube text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900">${item.name}</h4>
+                                <p class="text-xs text-gray-500">${item.price} ₺</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                                <button onclick="decreaseQuantity(${index})" class="px-2 py-1 text-xs text-gray-600 hover:bg-gray-200">-</button>
+                                <span class="px-2.5 text-xs font-bold text-gray-800">${item.quantity}</span>
+                                <button onclick="increaseQuantity(${index})" class="px-2 py-1 text-xs text-gray-600 hover:bg-gray-200">+</button>
+                            </div>
+                            <span class="font-bold text-sm text-gray-900">${(item.price * item.quantity).toFixed(2)} ₺</span>
+                            <button onclick="removeFromCart(${index})" class="text-gray-400 hover:text-red-500 p-1">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            totalEl.textContent = total.toFixed(2) + ' ₺';
+        }
+
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            localStorage.setItem(currentCartKey, JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+            showNotification('Ürün sepetten kaldırıldı.');
+        }
+
+        window.checkout = function() {
+            if (cart.length === 0) {
+                showNotification('Sepetiniz boş!');
+                return;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'satinalma.html';
+        }
+
+        // Siparişleri Listele ve Kargo Takip Butonu Ekle
+        window.renderOrders = function() {
+            const container = document.getElementById('orders-list');
+            
+            if (orders.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-12">Henüz tamamlanmış bir siparişiniz yok.</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            orders.forEach(order => {
+                let itemsHtml = order.items.map(i => `<li class="text-xs text-gray-600">${i.name} (${i.quantity} adet)</li>`).join('');
+                container.innerHTML += `
+                    <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
+                        <div class="flex items-center justify-between border-b border-gray-200 pb-2">
+                            <span class="text-xs font-bold text-brand-600">Sipariş ID: #${order.id}</span>
+                            <span class="text-xs text-gray-400">${order.date}</span>
+                        </div>
+                        <ul class="space-y-1 py-1">
+                            ${itemsHtml}
+                        </ul>
+                        <div class="flex items-center justify-between pt-2 border-t border-gray-200 text-sm font-bold text-gray-900">
+                            <span>Toplam Tutar:</span>
+                            <span class="text-brand-500">${order.total.toFixed(2)} ₺</span>
+                        </div>
+                        <!-- Kargo Takip Sayfasına Gitme Butonu -->
+                        <div class="pt-2">
+                            <a href="siparis.html?id=${order.id}" class="w-full block text-center py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold rounded-xl shadow-sm transition-all">
+                                <i class="fa-solid fa-truck-fast mr-1"></i> Kargo Durumunu Takip Et
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.showNotification = function(message) {
+            const toast = document.getElementById('toast');
+            const messageEl = document.getElementById('toast-message');
+            messageEl.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
+        }
+
+        window.searchProducts = function() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            document.querySelectorAll('.product-card').forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                card.style.display = title.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        window.filterProducts = function(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-500', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+            event.target.classList.add('bg-brand-500', 'text-white', 'shadow-sm');
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = (category === 'hepsi' || card.dataset.category === category) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

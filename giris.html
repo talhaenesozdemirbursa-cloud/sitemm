@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .kayit-konteyner {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-grup {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .kayit-butonu {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .kayit-butonu:hover {
+            background-color: #0056b3;
+        }
+        .sifremi {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+        .sifremi a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .sifremi a:hover {
+            text-decoration: underline;
+        }
+        /* Mesaj kutusu stili (Hata için kırmızı, başarı için yeşil olacak) */
+        #hataMesaji {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kayit-konteyner">
+        <h1>Kullanıcı Girişi</h1>
+        <form id="girisForm" onsubmit="event.preventDefault();">
+            <div class="form-grup">
+                <label for="email">E-posta Adresi</label>
+                <input type="email" id="email" placeholder="ornek@eposta.com" required>
+            </div>
+
+            <div class="form-grup">
+                <label for="sifre">Şifre</label>
+                <input type="password" id="sifre" placeholder="Şifrenizi giriniz" required>
+            </div>
+
+            <button type="submit" class="kayit-butonu" id="girisBtn">Giriş Yap</button>
+
+            <!-- Bildirimlerin (hata veya başarı) görüneceği alan -->
+            <p id="hataMesaji"></p>
+
+            <p class="sifremi">
+                Hesabınız yok mu? <a href="deneme.html">Kayıt Ol</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Firebase SDK Entegrasyonu -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPLv0-onaIMbHIDvnVEBz7MGk2rR6E5j0",
+            authDomain: "atolye3d-55902.firebaseapp.com",
+            projectId: "atolye3d-55902",
+            storageBucket: "atolye3d-55902.firebasestorage.app",
+            messagingSenderId: "839537894620",
+            appId: "1:839537894620:web:b24c20c3a744cb29e94019",
+            measurementId: "G-ZB1LCH5QH1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('girisBtn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const sifre = document.getElementById('sifre').value;
+            const hataKutusu = document.getElementById('hataMesaji');
+
+            // Alanı sıfırla
+            hataKutusu.textContent = "";
+
+            try {
+                // Firebase ile giriş yapma
+                await signInWithEmailAndPassword(auth, email, sifre);
+                
+                // Başarılı olursa yeşil renkte şık yazı yazdırıp 1 saniye sonra yönlendiriyoruz
+                hataKutusu.style.color = "#28a745";
+                hataKutusu.textContent = "Giriş başarılı! Yönlendiriliyorsunuz...";
+                
+                setTimeout(() => {
+                    window.location.href = "anasayfasatin.html";
+                }, 1000);
+
+            } catch (error) {
+                // Hata olursa kırmızı renkte yazdırıyoruz
+                hataKutusu.style.color = "#d9534f";
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    hataKutusu.textContent = "E-posta adresi veya şifre hatalı.";
+                } else if (error.code === 'auth/invalid-email') {
+                    hataKutusu.textContent = "Geçersiz bir e-posta adresi girdiniz.";
+                } else {
+                    hataKutusu.textContent = "Giriş başarısız: " + error.message;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

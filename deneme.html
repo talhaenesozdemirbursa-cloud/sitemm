@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .kayit-konteyner {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-grup {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .kayit-butonu {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .kayit-butonu:hover {
+            background-color: #0056b3;
+        }
+        .giris-linki {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+        .giris-linki a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .giris-linki a:hover {
+            text-decoration: underline;
+        }
+        #hataMesaji {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kayit-konteyner">
+        <h1>Hesap Oluştur</h1>
+        <form id="kayitForm">
+            <div class="form-grup">
+                <label for="adsoyad">Ad Soyad</label>
+                <input type="text" id="adsoyad" placeholder="Adınızı ve soyadınızı girin" required>
+            </div>
+            
+            <div class="form-grup">
+                <label for="email">E-posta Adresi</label>
+                <input type="email" id="email" placeholder="ornek@gmail.com" required>
+            </div>
+
+            <div class="form-grup">
+                <label for="sifre">Şifre</label>
+                <input type="password" id="sifre" placeholder="Güçlü bir şifre belirleyin" required>
+            </div>
+
+            <button type="submit" class="kayit-butonu" id="kayitBtn">Kayıt Ol</button>
+
+            <p id="hataMesaji"></p>
+
+            <p class="giris-linki">
+                Zaten bir hesabınız var mı? <a href="giris.html">Giriş Yap</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Firebase SDK Entegrasyonu -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDPLv0-onaIMbHIDvnVEBz7MGk2rR6E5j0",
+            authDomain: "atolye3d-55902.firebaseapp.com",
+            projectId: "atolye3d-55902",
+            storageBucket: "atolye3d-55902.firebasestorage.app",
+            messagingSenderId: "839537894620",
+            appId: "1:839537894620:web:b24c20c3a744cb29e94019",
+            measurementId: "G-ZB1LCH5QH1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('kayitForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const adSoyad = document.getElementById('adsoyad').value;
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const sifre = document.getElementById('sifre').value;
+            const hataKutusu = document.getElementById('hataMesaji');
+
+            hataKutusu.textContent = "";
+
+            // --- SIKI E-POSTA KONTROLÜ (Gacmil veya sahte uzantılara son) ---
+            // Sadece gmail.com, hotmail.com, outlook.com, yahoo.com, icloud.com gibi gerçekçi uzantılara izin verir
+            const gecerliDomainler = /@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|icloud\.com|yandex\.com|edu\.tr)$/;
+            
+            if (!gecerliDomainler.test(email)) {
+                hataKutusu.style.color = "#d9534f";
+                hataKutusu.textContent = "Geçersiz e-posta uzantısı! Lütfen geçerli bir e-posta adresi girin.";
+                return; 
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, sifre);
+                
+                await updateProfile(userCredential.user, {
+                    displayName: adSoyad
+                });
+
+                hataKutusu.style.color = "#28a745";
+                hataKutusu.textContent = "Kayıt başarılı! Yönlendiriliyorsunuz...";
+                
+                setTimeout(() => {
+                    window.location.href = "anasayfasatin.html";
+                }, 1000);
+
+            } catch (error) {
+                hataKutusu.style.color = "#d9534f";
+                if (error.code === 'auth/email-already-in-use') {
+                    hataKutusu.textContent = "Bu e-posta adresi zaten kullanımda. Lütfen giriş yapın.";
+                } else if (error.code === 'auth/weak-password') {
+                    hataKutusu.textContent = "Şifreniz en az 6 karakter olmalıdır.";
+                } else if (error.code === 'auth/invalid-email') {
+                    hataKutusu.textContent = "Geçersiz bir e-posta adresi girdiniz.";
+                } else {
+                    hataKutusu.textContent = "Kayıt olurken hata oluştu: " + error.message;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
